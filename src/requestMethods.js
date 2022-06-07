@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-const BASE_URL = "http://localhost:8800/";
+const BASE_URL = "https://netflix-22-backend.netlify.app/";
 
 let user = JSON.parse(localStorage.getItem("user"));
 const TOKEN = user?.accessToken;
