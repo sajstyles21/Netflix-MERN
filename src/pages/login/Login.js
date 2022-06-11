@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import validator from "validator";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/userSlice";
+import loader from "../../loadimage.gif";
 
 const Login = () => {
   const [inputData, setInputData] = useState({
@@ -11,6 +12,7 @@ const Login = () => {
     password: "",
   });
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const emailRef = useRef();
@@ -24,6 +26,11 @@ const Login = () => {
       setIsError(true);
       setError("Enter valid Email");
     }
+
+    return () => {
+      setIsError(false);
+      setError("");
+    };
   }, [emailRef]);
 
   const handleInputChange = (e) => {
@@ -47,12 +54,14 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     dispatch(login(inputData))
       .then((res) => {
         if (res.error) {
           setIsError(true);
           setError(res.payload.err.response.data);
         } else {
+          setIsLoading(false);
           localStorage.setItem("user", JSON.stringify(res.payload));
         }
       })
@@ -95,7 +104,19 @@ const Login = () => {
             className="loginButton"
             disabled={isError ? true : false}
           >
-            Sign In
+            {isLoading ? (
+              <img
+                loading="lazy"
+                style={{
+                  width: "20px",
+                  marginTop: "5px",
+                }}
+                src={loader}
+                alt=""
+              />
+            ) : (
+              "Sign In"
+            )}
           </button>
           {isError && `${error}`}
           <span>
