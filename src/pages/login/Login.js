@@ -102,7 +102,7 @@ const Login = () => {
           <button
             type="submit"
             className="loginButton"
-            disabled={isError ? true : false}
+            disabled={isError || isLoading ? true : false}
           >
             {isLoading ? (
               <img
